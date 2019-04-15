@@ -17,22 +17,23 @@ public class BaseFactory {
     @Autowired
     private MinConfig config;
 
-    private enum BaseType{
+    private enum BaseType {
 
-        MySQL,Oracle,PostgreSQL,SQLite,SQLServer
+        MySQL, Oracle, PostgreSQL, SQLite, SQLServer
 
     }
 
 
     /**
      * 获取数据库信息
+     *
      * @return
      */
     public Database getDataBase() throws Exception {
         Database dataBase = null;
         String baseType = config.getValue("baseType");
         String baseName = config.getValue("baseName");
-        BaseType type =BaseType.valueOf(baseType);
+        BaseType type = BaseType.valueOf(baseType);
         switch (type) {
             case MySQL:
                 dataBase = new MySQL(baseName);
@@ -41,7 +42,7 @@ public class BaseFactory {
                 dataBase = new Oracle(baseName);
                 break;
             case PostgreSQL:
-                dataBase = new PostgreSQL();
+                dataBase = new PostgreSQL(baseName);
                 break;
             case SQLite:
                 dataBase = new SQLite();
@@ -50,7 +51,7 @@ public class BaseFactory {
                 dataBase = new SQLServer(baseName);
                 break;
             default:
-                throw new Exception("Not Support BaseType: "+baseType);
+                throw new Exception("Not Support BaseType: " + baseType);
         }
         return dataBase;
     }
